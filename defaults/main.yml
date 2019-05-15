@@ -1,0 +1,45 @@
+---
+# defaults file for inverso.jira-docker
+
+jira_data_dir              : '/var/jira'
+jira_servername            : 'jira'
+jira_version               : 'latest'
+#jira_image_registry        : 'docker-public.nexusops.inverso.local'
+jira_image_registry        : ''
+jira_image_name            : 'dchevell/jira-software'
+
+jira_jvm_min_mem           : '2048m'
+jira_jvm_max_mem           : '3072m'
+jira_webappcontextpath     : '/jira'
+
+jira_proxy_configure       : False
+jira_proxy_name            : 'corporate-proxy'
+jira_proxy_port            : '8080'
+jira_proxy_nonProxyHosts   : 'localhost\|127.0.0.1\|{{ ansible_default_ipv4.address }}'
+
+# todo implement jmx
+# jira jmx settings
+# 
+# jira_jmx_configure                : no # yes | no | absent
+# jira_jmx_user                     : '{{ jira_user }}' # will be also the jmx password
+# jira_jmx_port                     : 8099
+# jira_jmx_args                     : '-Dcom.sun.management.jmxremote -Dcom.sun.management.jmxremote.port={{ jira_jmx_port }} -Dcom.sun.management.jmxremote.authenticate=true -Dcom.sun.management.jmxremote.password.file=/home/{{ jira_jmx_user }}/jmxremote.password -Dcom.sun.management.jmxremote.access.file=/home/{{ jira_jmx_user }}/jmxremote.access -Dcom.sun.management.jmxremote.ssl=false'
+
+jira_support_recommended_args: >
+  -Duser.timezone=Europe/Berlin
+  -Duser.region=DE
+  -Duser.country=DE
+  -Duser.language=de
+  -Djavax.net.ssl.trustStore=/var/atlassian/application-data/jira/cacerts
+  -Djira.context.path={{ jira_webappcontextpath }}
+  -Djdk.tls.trustNameService=true
+  -Djavax.net.ssl.keyStore=/var/atlassian/application-data/jira/cacerts
+#  -Dhttp.proxyHost={{ jira_proxy_name }} -Dhttp.proxyPort={{ jira_proxy_port }} 
+#  -Dhttp.nonProxyHosts={{ jira_proxy_nonProxyHosts }}
+#  -Dhttps.proxyHost={{ jira_proxy_name }} -Dhttps.proxyPort={{ jira_proxy_port }} 
+#  -Dhttps.nonProxyHosts={{ jira_proxy_nonProxyHosts }}
+
+jira_revproxy_name         : '{{ jira_servername }}'
+jira_revproxy_port         : '443'
+jira_revproxy_scheme       : 'https'
+jira_revproxy_secure       : 'true'

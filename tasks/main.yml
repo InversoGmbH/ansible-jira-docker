@@ -1,0 +1,63 @@
+---
+# tasks file for inverso.jira-docker
+
+- name: check required variables
+  assert:
+    that:
+      - jira_data_dir                 | mandatory
+      - jira_version                  | mandatory
+      - jira_jvm_min_mem              | mandatory
+      - jira_jvm_max_mem              | mandatory
+      - jira_support_recommended_args | mandatory
+      - jira_servername               | mandatory
+  tags: ['varcheck']
+
+- name: ensure docker is present
+  package:
+    name: docker
+    state: present
+
+- name: ensure docker is started and enabled
+  systemd:
+    name: docker
+    enabled: yes
+    state: started
+
+- name: install ansible docker dependencies
+  pip:
+    name: docker-py
+    state: present
+
+- name: create jira data dir on docker host
+  file:
+    path: '{{ jira_data_dir }}'
+    state: directory
+
+- name: ensure system cacerts file is also present for jira
+  copy:
+    src: '/etc/pki/java/cacerts'
+    dest: '{{ jira_data_dir }}/'
+    remote_src: yes
+
+- name: create jira container
+  docker_container:
+    name: 'jira'
+    hostname: 'jira'
+    image: "{{ jira_image_registry }}{{ jira_image_registry | ternary('/','') }}{{ jira_image_name }}:{{ jira_version }}"
+    state: started
+    restart_policy: unless-stopped
+    cacert_path: '/etc/pki/tls/certs/ca-bundle.crt'
+    network_mode: host
+    volumes:
+      - '{{ jira_data_dir }}:/var/atlassian/application-data/jira'
+    env:
+      LANG: 'de_DE.utf8'
+      JVM_MINIMUM_MEMORY: '{{ jira_jvm_min_mem }}'
+      JVM_MAXIMUM_MEMORY: '{{ jira_jvm_max_mem }}'
+      JVM_SUPPORT_RECOMMENDED_ARGS: '{{ jira_support_recommended_args }}'
+      JIRA_CONTEXT_PATH: '{{ jira_webappcontextpath }}'
+      CATALINA_CONNECTOR_PROXYNAME: '{{ jira_revproxy_name }}'
+      CATALINA_CONNECTOR_PROXYPORT: '{{ jira_revproxy_port }}'
+      CATALINA_CONNECTOR_SCHEME: '{{ jira_revproxy_scheme }}'
+      CATALINA_CONNECTOR_SECURE: '{{ jira_revproxy_secure }}'
+      CATALINA_CONTEXT_PATH: '{{ jira_webappcontextpath }}'
