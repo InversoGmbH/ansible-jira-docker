@@ -8,6 +8,8 @@ jira_version               : 'latest'
 jira_image_registry        : ''
 jira_image_name            : 'dchevell/jira-software'
 
+jira_service_enabled       : 'yes'
+
 jira_jvm_min_mem           : '2048m'
 jira_jvm_max_mem           : '3072m'
 jira_webappcontextpath     : '/jira'
