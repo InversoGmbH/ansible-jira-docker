@@ -6,7 +6,7 @@ jira_servername            : 'jira'
 jira_version               : 'latest'
 #jira_image_registry        : 'docker-public.nexusops.inverso.local'
 jira_image_registry        : ''
-jira_image_name            : 'dchevell/jira-software'
+jira_image_name            : 'atlassian/jira-software'
 
 jira_service_enabled       : 'yes'
 
