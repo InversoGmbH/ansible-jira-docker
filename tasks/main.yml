@@ -49,16 +49,5 @@
     restart_policy: unless-stopped
     cacert_path: '/etc/pki/tls/certs/ca-bundle.crt'
     network_mode: host
-    volumes:
-      - '{{ jira_data_dir }}:/var/atlassian/application-data/jira'
-    env:
-      LANG: 'de_DE.utf8'
-      JVM_MINIMUM_MEMORY: '{{ jira_jvm_min_mem }}'
-      JVM_MAXIMUM_MEMORY: '{{ jira_jvm_max_mem }}'
-      JVM_SUPPORT_RECOMMENDED_ARGS: '{{ jira_support_recommended_args }}'
-      ATL_TOMCAT_CONTEXT_PATH: '{{ jira_webappcontextpath }}'
-      ATL_PROXY_NAME: '{{ jira_revproxy_name }}'
-      ATL_PROXY_PORT: '{{ jira_revproxy_port }}'
-      ATL_TOMCAT_SCHEME: '{{ jira_revproxy_scheme }}'
-      ATL_TOMCAT_CONTEXTPATH: '{{ jira_webappcontextpath }}'
-      ATL_TOMCAT_SECURE: '{{ jira_revproxy_secure }}'
+    volumes: '{{ jira_volumes }}'
+    env: '{{ jira_env }}'

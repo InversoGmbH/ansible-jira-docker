@@ -19,6 +19,25 @@ jira_proxy_name            : 'corporate-proxy'
 jira_proxy_port            : '8080'
 jira_proxy_nonProxyHosts   : 'localhost\|127.0.0.1\|{{ ansible_default_ipv4.address }}'
 
+jira_env_default:
+  LANG: 'de_DE.utf8'
+  JVM_MINIMUM_MEMORY: '{{ jira_jvm_min_mem }}'
+  JVM_MAXIMUM_MEMORY: '{{ jira_jvm_max_mem }}'
+  JVM_SUPPORT_RECOMMENDED_ARGS: '{{ jira_support_recommended_args }}'
+  ATL_TOMCAT_CONTEXT_PATH: '{{ jira_webappcontextpath }}'
+  ATL_PROXY_NAME: '{{ jira_revproxy_name }}'
+  ATL_PROXY_PORT: '{{ jira_revproxy_port }}'
+  ATL_TOMCAT_SCHEME: '{{ jira_revproxy_scheme }}'
+  ATL_TOMCAT_CONTEXTPATH: '{{ jira_webappcontextpath }}'
+  ATL_TOMCAT_SECURE: '{{ jira_revproxy_secure }}'
+
+jira_env: '{{ jira_env_default }}'
+
+jira_volumes_default:
+  - '{{ jira_data_dir }}:/var/atlassian/application-data/jira'
+
+jira_volumes: '{{ jira_volumes_default }}'
+
 # todo implement jmx
 # jira jmx settings
 # 
