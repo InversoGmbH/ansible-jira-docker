@@ -4,9 +4,9 @@
 jira_data_dir              : '/var/jira'
 jira_servername            : 'jira'
 jira_version               : 'latest'
-#jira_image_registry        : 'docker-public.nexusops.inverso.local'
 jira_image_registry        : ''
 jira_image_name            : 'atlassian/jira-software'
+jira_image_pull            : 'no'
 
 jira_service_enabled       : 'yes'
 
@@ -37,6 +37,7 @@ jira_volumes_default:
   - '{{ jira_data_dir }}:/var/atlassian/application-data/jira'
 
 jira_volumes: '{{ jira_volumes_default }}'
+
 
 # todo implement jmx
 # jira jmx settings

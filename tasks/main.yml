@@ -11,6 +11,7 @@
       - jira_support_recommended_args | mandatory
       - jira_servername               | mandatory
       - jira_service_enabled          in ['yes','no']
+      - jira_image_pull               in ['yes','no']
   tags: ['varcheck']
 
 - name: ensure docker is present
@@ -51,3 +52,4 @@
     network_mode: host
     volumes: '{{ jira_volumes }}'
     env: '{{ jira_env }}'
+    pull: "{{ jira_image_pull }}"
